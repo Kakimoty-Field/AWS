@@ -22,19 +22,19 @@
 ## VisualStudio プラグイン
 開発者ガイドの[AWS Toolkit for Visual Studio](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/csharp-package-toolkit.html)を参考に、[Visual Studio の拡張機能](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.AWSToolkitforVisualStudio2017)をインストールします。
 
-![](./img/010.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/010.png)
 ## プロジェクト作成
 Visual Studio の「ファイル」メニューから「新規作成」を選択し、「プロジェクト」を選択します。
-![](./img/100.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/100.png)
 
 「新しいプロジェクト」ウインドウで [AWS Lambda] ツリーを選択し、 <br>
 `「AWS Lambda Project(.NET Core - C#)」` を選択します。<br>
 プロジェクト名と保存場所は適宜入力します。
-![](./img/110.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/110.png)
 
 「New AWS Lambda C# Project」ウインドウでは、サンプルアプリケーションのコードを選択することができます。<br>
 ここでは、最低限のコードが記述されている `[Empty Function]` を選択し、「Finish」ボタンをクリックします。 
-![](./img/120.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/120.png)
 
 # 開発とデプロイ
 ## コード記述
@@ -68,19 +68,19 @@ Visual Studio の「ファイル」メニューから「新規作成」を選択
 Visual Studio から パブリッシュするための認証情報を AWS コンソールから取得します。
 
 AWS コンソール右上のメニューから「ユーザ名▼」を選択し、「マイセキュリティ資格情報」を選択します
-![](./img/200.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/200.png)
 [IAM Management Console] （セキュリティ認証情報）画面で、「アクセスキー（アクセスキー ＩＤとシークレットアクセスキー）」を開きます。<br>
 「新しいアクセスキーの作成」ボタンをクリックしアクセスキーＩＤを発行します。
-![](./img/210.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/210.png)
 [アクセスキーの作成]ダイアログが表示されたら、[アクセスキーID]と[シークレットアクセスキー]を控えておきます。
-![](./img/220.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/220.png)
 
 ### デプロイ
 Visual Studio のソリューションエクスプローラで、プロジェクトを右クリックし「Publish to AWS Lambda...」を選択します。
-![](./img/300.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/300.png)
 
 [Upload Lambda Function]ダイアログで、「Account profile to use:」のドロップダウン右にあるアイコンをクリックします。
-![](./img/310.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/310.png)
 
 アップロードするためのユーザを追加する画面で以下の項目を入力します。
 
@@ -90,11 +90,11 @@ Visual Studio のソリューションエクスプローラで、プロジェク
 - Secret Access Key：[認証情報の準備](#認証情報の準備)で控えたシークレットアクセスキー
 
 入力がおわったら「ＯＫ」ボタンをクリックします。
-![](./img/340.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/340.png)
 
 再び[Upload Lambda Function]ダイアログで、「Function Name」に作成する Lambda関数の名前を入力します。
 入力したら「Next」ボタンをクリックします。
-![](./img/320.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/320.png)
 
 [Advanced Function Details]ダイアログでは、以下の項目を入力します。
 
@@ -102,7 +102,7 @@ Visual Studio のソリューションエクスプローラで、プロジェク
 - Memory(MB)：「128」
 
 入力がおわったら「Upload」ボタンをクリックします。
-![](./img/330.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/330.png)
 
 これでデプロイは完了です。
 
@@ -112,15 +112,15 @@ Visual Studio のソリューションエクスプローラで、プロジェク
 赤い枠のテキストエリアに入力された文字が、Lambda関数の引数として渡されます。<br>
 「Example Requetes:」ドロップダウンでは、AWS で接続可能なサービスからの引数サンプルを選択することもできます。<br>
 引数の設定が完了したら「Invoke」ボタンをクリックします。
-![](./img/400.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/400.png)
 
 実行結果が、右側のペインに表示されます。また、タブ下部のペインには実行ログが表示されます。
 
 ## AWS Console でテスト
 [AWS Console]から「Lambda」を選択すると、Visual Studio でデプロイした関数が表示されます。
-![](./img/410.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/410.png)
 関数名をクリックし詳細画面を表示した後、右上の「テスト」ボタンをクリックします。
-![](./img/420.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/420.png)
 [テストイベントの設定]ダイアログが表示されるので、以下の項目を入力します。
 
 - 新しいテストイベントの作成を選択
@@ -128,11 +128,11 @@ Visual Studio のソリューションエクスプローラで、プロジェク
 - 下部テキストボックス：関数に引き渡すテストデータ
 
 入力が終ったら「作成」ボタンをクリックします。
-![](./img/430.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/430.png)
 
 再び「テスト」ボタンをクリックすると関数のテストが実行されます。<br>
 テストの実行結果が画面に表示されるので「詳細」をクリックします。<br>
 下記キャプチャの、上側の赤枠が関数の戻り値。`OK`を返していることがわかります。<br>
 また、下側の赤枠には関数のログが出力されますが、テストデータとして渡した引数がログに出力されていることが確認できます。
-![](./img/440.png)
+![](https://raw.githubusercontent.com/Kakimoty-Field/AWS-Lambda/main/01-Lambda_C%23/img/440.png)
 
