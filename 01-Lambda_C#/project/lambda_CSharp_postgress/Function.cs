@@ -64,5 +64,33 @@ namespace lambda_CSharp_postgress
             }
             return retMsg; //input?.ToUpper();
         }
+
+        /// <summary>
+        /// A simple function that takes a string and does a ToUpper
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public string SelectHandler(object input, ILambdaContext context)
+        {
+            var retMsg = $"OK []";
+            context.Logger.LogLine($"Arg : [{input}]");
+            try
+            {
+                using (var con = getConnection(context))
+                {
+                    con.Open();
+                    var cmd = con.CreateCommand();
+                    cmd.CommandText = $"SELECT * FROM test01 order by updt asc";
+                    retMsg = $"OK SelectID=[{cmd.ExecuteScalar()}]";
+                    con.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                retMsg = e.Message;
+            }
+            return retMsg; //input?.ToUpper();
+        }
     }
 }
