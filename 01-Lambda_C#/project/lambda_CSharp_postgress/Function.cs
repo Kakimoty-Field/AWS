@@ -13,28 +13,55 @@ namespace lambda_CSharp_postgress
 {
     public class Function
     {
+        private string logString(string msg)
+        {
+            return $"{System.DateTime.Now.ToString("yyyyMMdd-hhmm-ss.ffff")} :{msg}";
+        }
+
         //
         // パラメータ指定がないときのデフォルト接続先（テスト用）
-        private NpgsqlConnection getConnection(ILambdaContext context)
+        private string createConnectionString(ILambdaContext context)
         {
             var host = Environment.GetEnvironmentVariable("DB_HOST") as string;
             var user = Environment.GetEnvironmentVariable("DB_USER") as string;
             var pass = Environment.GetEnvironmentVariable("DB_PASS") as string;
             var name = Environment.GetEnvironmentVariable("DB_NAME") as string;
 
-            return getConnection(context,
-                                 host ?? "aurora-postgis.cluster-csyoj4ibnfdl.ap-northeast-1.rds.amazonaws.com",
-                                 user ?? "mic",
-                                 pass ?? "mic123",
-                                 name ?? "predora");
+            context.Logger.LogLine($"Host={host};Username={user};Password={pass};Database={name};");
+            return $"Host={host};Username={user};Password={pass};Database={name};";
         }
 
         // 本当はいろいろなDBアクセスを可能にしてもいいけれど (ADO.net
         // PostGIS 使うので Postgres限定で
-        private NpgsqlConnection getConnection(ILambdaContext context, string host, string user, string pass, string db)
+        private NpgsqlConnection getConnection(string connectionString)
         {
-            context.Logger.LogLine($"Host={host};Username={user};Password={pass};Database={db};");
-            return new NpgsqlConnection($"Host={host};Username={user};Password={pass};Database={db};");
+            return new NpgsqlConnection(connectionString);
+        }
+
+        private async Task<int> dbAccessAsync(ILambdaContext context, string connection, string query)
+        {
+            try
+            {
+                context.Logger.LogLine(logString("Start"));
+                using (var con = getConnection(connection))
+                {
+                    context.Logger.LogLine(logString("connect"));
+                    await con.OpenAsync();
+                    var cmd = con.CreateCommand();
+                    cmd.CommandText = query;
+                    context.Logger.LogLine(logString("Scalar"));
+                    await cmd.ExecuteScalarAsync();
+                    context.Logger.LogLine(logString("Close"));
+                    await con.CloseAsync();
+                    await con.DisposeAsync();
+                }
+                context.Logger.LogLine(logString("End"));
+            }
+            catch (Exception e)
+            {
+                context.Logger.LogLine($"dbAccessAsync Error: [{e.Message }]");
+            }
+            return 1 ;
         }
 
         /// <summary>
@@ -46,17 +73,16 @@ namespace lambda_CSharp_postgress
         public string FunctionHandler(object input, ILambdaContext context)
         {
             var retMsg = $"OK []";
-            context.Logger.LogLine($"Arg : [{input}]");
+            var connectionString = createConnectionString(context);
+            //context.Logger.LogLine($"Arg : [{input}]");
             try
             {
-                using (var con = getConnection(context))
-                {
-                    con.Open();
-                    var cmd = con.CreateCommand();
-                    cmd.CommandText = $"INSERT INTO test01 (name, address, updt) VALUES ('yuka', '1', '{System.DateTime.Now.ToString("yyyyMMddhhmm-ss-fffffff")}')";
-                    retMsg = $"OK insertCount=[{cmd.ExecuteNonQuery()}]";
-                    con.Close();
-                }
+                var ret = dbAccessAsync(context,
+                                     connectionString,
+                                      $"INSERT INTO test01 (name, address, updt) VALUES ('yuka', '1', '{System.DateTime.Now.ToString("yyyyMMddhhmm-ss-fffffff")}')");
+
+                retMsg = $"OK insertCount=[{ret.Result}]";
+                context.Logger.LogLine(logString($"Function End [{retMsg}]"));
             }
             catch (Exception e)
             {
@@ -73,18 +99,29 @@ namespace lambda_CSharp_postgress
         /// <returns></returns>
         public string SelectHandler(object input, ILambdaContext context)
         {
+            var taskList = new List<Task<int>>();
             var retMsg = $"OK []";
-            context.Logger.LogLine($"Arg : [{input}]");
+            var connectionString = createConnectionString(context);
+            //context.Logger.LogLine($"Arg : [{input}]");
             try
             {
-                using (var con = getConnection(context))
+                // 一回同期処理
+                var task = dbAccessAsync(context, connectionString, $"SELECT * FROM test01 order by updt asc");
+                task.Wait();
+
+                // 非同期アクセス作成
+                context.Logger.LogLine(logString("Create Thread"));
+                //Enumerable.Range(0, 100).ToList().ForEach(x =>
+                for(var i = 0; i < 100000; i++)
                 {
-                    con.Open();
-                    var cmd = con.CreateCommand();
-                    cmd.CommandText = $"SELECT * FROM test01 order by updt asc";
-                    retMsg = $"OK SelectID=[{cmd.ExecuteScalar()}]";
-                    con.Close();
+                    taskList.Add(dbAccessAsync(context, connectionString, $"SELECT * FROM test01 order by updt asc"));
                 }
+
+                // 非同期を全部待つ
+                context.Logger.LogLine(logString("WaitThread"));
+                var newTask = Task.WhenAll(taskList.ToArray());
+                newTask.Wait();
+                context.Logger.LogLine(logString("...Done"));
             }
             catch (Exception e)
             {

@@ -12,12 +12,13 @@
     "framework"     : "netcoreapp2.1",
     "function-runtime" : "dotnetcore2.1",
     "function-memory-size" : 128,
-    "function-timeout"     : 30,
+    "function-timeout"     : 20,
     "function-handler"     : "lambda_CSharp_postgress::lambda_CSharp_postgress.Function::SelectHandler",
     "function-name"        : "postgressAccess_Select",
     "function-role"        : "arn:aws:iam::360022153230:role/lambda_exec_postgressAccess-1",
     "tracing-mode"         : "PassThrough",
-    "environment-variables" : "",
+    "environment-variables" : "\"DB_PASS\"=\"kaki\";\"DB_USER\"=\"kaki\";\"DB_NAME\"=\"kakitest\";\"DB_HOST\"=\"aurora-postgis.cluster-csyoj4ibnfdl.ap-northeast-1.rds.amazonaws.com\"",
     "function-subnets"      : "subnet-4075d008",
-    "function-security-groups" : "sg-09f117a4c1941f6b3"
+    "function-security-groups" : "sg-09f117a4c1941f6b3",
+    "function-description"     : ""
 }
