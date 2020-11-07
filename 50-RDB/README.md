@@ -201,12 +201,15 @@ RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
 
 # 環境構築編(ソフトウェア)
 ## EC2側セットアップ
+クライアントＰＣから直接ターミナルでSSH、もしくはブラウザベースのSSHコンソール(EC2 Instance Connect)を紹介します。
 #### クライアントＰＣからターミナルでSSH
 [既存のキーペアを選択するか、新しいキーペアを作成します。](#既存のキーペアを選択するか、新しいキーペアを作成します。)で保存したキーペアを使用してssh接続します。<br>
 ![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/120.png)
 #### EC2 Instance Connect でSSH
 AWS EC2 コンソールから[EC2作成](#EC2作成)で作成したインスタンスを選択し、「接続」ボタンをクリックして[インスタンスに接続]から`EC2 Instance Conect`でSSH接続します。
 下図はからSSH接続する参考資料です。
+
+
 ![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/100.png)
 ![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/110.png)
 
