@@ -67,12 +67,12 @@ Data API を使用してアクセスするための環境構築と確認手順�
 # 今回の環境
 VPC(Virtual Private Cloud)の中に、検証対象となる RDB と作業用のEC2 を用意します。クライアントPCからはEC2を経由してRDSにアクセスするようにします。
 
-![](./img/001.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/001.png)
 # 環境構築編(仮想ハード)
 ## VPCとセキュリティグループ作成
 VPC コンソールでVPC を作成します。また EC2 用と RDB 用のセキュリティグループも作成します。
 ### VPCの設定とタグ
-![](./img/002.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/002.png)
 - 名前タグ
   - 「任意の文字列」 
 - IPv4 CIDR ブロック
@@ -87,7 +87,7 @@ VPC コンソールでVPC を作成します。また EC2 用と RDB 用のセ�
 ### セキュリティグループの作成
 VPCコンソールメニューの「セキュリティグループ」からセキュリティグループを作成します。
 #### 作業EC2用セキュリティグループ作成
-![](./img/003.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/003.png)
 - 基本的な詳細
   - セキュリティグループ名
     - 「EC2 用とわかる文字列」
@@ -104,7 +104,7 @@ VPCコンソールメニューの「セキュリティグループ」からセ�
   - 変更なし
 
 #### RDB用セキュリティグループ作成
-![](./img/004.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/004.png)
 - 基本的な詳細
   - セキュリティグループ名
     - 「RDB 用とわかる文字列」
@@ -123,10 +123,10 @@ VPCコンソールメニューの「セキュリティグループ」からセ�
 RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
 ### ステップ1:Amazon マシンイメージ (AMI)
 `Amazon Linux 2 AMI (HVM), SSD Volume Type` を選択し「次のステップ」ボタンをクリックします。
-![](./img/900.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/900.png)
 ### ステップ2:インスタンスタイプの選択
 無料利用枠の対象である `t2.micro`  を選択し「次のステップ」ボタンをクリックします。
-![](./img/910.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/910.png)
 ### ステップ3:インスタンスの詳細の設定
 デフォルトのまま「次のステップ」ボタンをクリックします。
 ### ステップ4:ストレージの追加
@@ -139,20 +139,20 @@ RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
   - 「既存のセキュリティグループを選択する」
 - セキュリティグループＩＤ
   - 「[作業EC2用セキュリティグループ作成](#作業EC2用セキュリティグループ作成)で作成したセキュリティグループ」
-![](./img/920.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/920.png)
 ### ステップ7:インスタンス作成の確認
 設定内容を確認したうえで、「起動」ボタンをクリックします。<br>
 #### 既存のキーペアを選択するか、新しいキーペアを作成します。
 `新しいキーペアの作成`を選択し、キーペア名に任意の文字列を入力します。「キーペアのダウンロード」ボタンが有効になったらクリックし、`*.pem` ファイルをダウンロードしておきます。
 
-![](./img/930.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/930.png)
   
 ## RDB作成
 ### Aurora Serverlessの作成
 [Amazon Aurora ユーザガイド](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html)の、[Amazon Aurora Serverless を使用する](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html)を参考に `Amazon Aurora Serverless DBクラスター` を、RDSコンソールで作成します。
 
 #### データベースの作成とエンジンのオプション
-![](./img/010.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/010.png)
 - データベースの作成方法
   - 「標準作成」 
 - エンジンのオプション   
@@ -168,7 +168,7 @@ RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
 
 
 #### 設定とキャパシティの設定
-![](./img/020.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/020.png)
 - DB クラスター識別子
   - 「任意の文字列」
 - 認証情報の設定
@@ -185,7 +185,7 @@ RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
 
 
 #### 接続
-![](./img/040.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/040.png)
 ##### Virtual Private Cloud(VPC)
 「[VPCとセキュリティグループ作成](#VPCとセキュリティグループ作成)で作成したＶＰＣ」
 ##### 追加の接続設定
@@ -203,24 +203,24 @@ RDBを操作する作業用のEC2を、EC2 コンソールで作成します。
 ## EC2側セットアップ
 #### クライアントＰＣからターミナルでSSH
 [既存のキーペアを選択するか、新しいキーペアを作成します。](#既存のキーペアを選択するか、新しいキーペアを作成します。)で保存したキーペアを使用してssh接続します。<br>
-![](./img/120.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/120.png)
 #### EC2 Instance Connect でSSH
 AWS EC2 コンソールから[EC2作成](#EC2作成)で作成したインスタンスを選択し、「接続」ボタンをクリックして[インスタンスに接続]から`EC2 Instance Conect`でSSH接続します。
 下図はからSSH接続する参考資料です。
-![](./img/100.png)
-![](./img/110.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/100.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/110.png)
 
 ### AWS コマンドリージョン設定
 `CLI AWS` のリージョンを設定しておきます。
 #### アクセスキーの取得
-![](./img/500.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/500.png)
 
 `Identity and Access Management(IAM)`コンソールで`アクセスキー`を作成して控えます。AWSコンソール画面右上のユーザ名をクリックして表示されるメニューから「マイセキュリティ資格情報」をクリックします。
 `AWS IAM 認証情報` 内の「アクセスキーの作成」ボタンをクリックします。
-![](./img/510.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/510.png)
 
 表示された `アクセスキーID`と`シークレットアクセスキー`控えておきます。
-![](./img/520.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/520.png)
 
 接続しているＳＳＨターミナルで、以下のコマンドを入力します。
 ```
@@ -233,7 +233,7 @@ AWS Secret Access Key [None]: 「シークレットアクセスキー」
 Default region name [None]: AWSコンソール右上のリージョンメニューをクリックして表示される「現在のリージョン」
 Default output format [None]: json
 ```
-![](./img/530.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/530.png)
 
 ### psql インストール
 `yum`コマンドを使って、`PostgreSQL client programs`をインストールします。
@@ -255,7 +255,7 @@ psql --version
 [psql インストール](#psql-インストール)でインストールしたコマンドを使用して、PostgreSQL にユーザ／データベース／テーブルを作成します。<br>
 ログインするために[]()で作成したAuroraServerless のホスト名を確認します。<br>
 RDS コンソールからインスタンスを選択し、[エンドポイント]をコピーします。
-![](./img/200.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/200.png)
 ### コンソールログイン
 エンドポイントが確認できたら、コンソールからログインします。
 ```
@@ -325,9 +325,9 @@ SELECT * FROM test01;
 ## シークレット作成
 [AWS Secrets Manager] で、`RDSデータベースの認証情報`のシークレットを作成します。<br>
 [AWS Secrets Manager]コンソールで「新しいシークレットを保存する」ボタンをクリックします。
-![](./img/300.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/300.png)
 ### シークレットの設定１
-![](./img/310.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/310.png)
 - シークレットの種類を選択
   - [RDSデータベースの認証情報]
 - ユーザー名
@@ -339,7 +339,7 @@ SELECT * FROM test01;
 
 「次」ボタンをクリックします。
 ### シークレットの設定２
-![](./img/320.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/320.png)
 - シークレットの名前
   - 「任意の文字列」
   
@@ -349,16 +349,16 @@ SELECT * FROM test01;
 ### シークレットの設定４
 確認画面で内容を確認したうえで「保存」ボタンをクリックします。<br>
 アプリケーションでシークレットを取得するサンプルコードが記載されているので、プログラミングする場合にはコピーしておくと便利です。
-![](./img/330.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/330.png)
 ### シークレットを控える
 作成されたシークレット一覧が表示されるので、今回作成したシークレットの名前をクリックして詳細を表示します。
-![](./img/340.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/340.png)
 `シークレットのARN`を控えておきます。
 
 ## RDB ARN 取得
 [Amazon RDS]コンソールで [Aurora Serverlessの作成](#Aurora-Serverlessの作成) で作成したRDBを選択します。<br>
 画面中部、「設定」タブをクリックし、このデータベースの `ARN` を控えます。
-![](./img/350.png)
+![](https://github.com/Kakimoty-Field/AWS/raw/main/50-RDB/img/350.png)
 
 # 動作確認
 SSH コンソールで下記のコマンドを入力します。SQL が発行され、結果が JSON 形式で表示されます。
